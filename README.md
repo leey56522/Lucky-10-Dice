@@ -1,8 +1,12 @@
 # Tenzies
 
+<a href="https://imgbb.com/"><img src="https://i.ibb.co/9VyLPGj/tenzies1.jpg" alt="tenzies1" border="0"></a>
+
 This is a React game where the player rolls 10 dice until all dice get the same number. The player can hold the dice so that the held dice don't change their value when the player presses reroll button.
 
 The game throws confetti to congratualte the player at the end of the game.
+
+
 
 ## Upcoming changes
 1. Add a scoreboard with highest score stored in local storage
