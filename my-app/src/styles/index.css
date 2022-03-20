@@ -15,7 +15,7 @@ body {
   min-height: 100vh;
 }
 
-main {
+.game-board {
   border-radius: 1rem;
   background-color: #edf2f4;
   height: 100%;
@@ -28,6 +28,8 @@ main {
   justify-content: center;
   align-items: center;
 }
+
+/* Dice */
 
 .dice-box {
   display: grid;
@@ -56,6 +58,8 @@ main {
 .die:hover {
   background: #e6e7eb;
 }
+
+/* Reroll/Newgame Button */
 
 .button-box {
   padding-top: 5rem;
@@ -163,8 +167,84 @@ main {
   outline: none;
 }
 
+/* How to Play button */
 
+.explanation-button-box {
+  display: flex;
+  margin-top: 2rem;
+  justify-content: center;
+  align-items: center;
+}
 
+.explanation-button {
+  align-items: center;
+  appearance: none;
+  background-color: #8d99ae;
+  border-radius: 10px;
+  border-width: 0;
+  box-shadow: rgba(45, 35, 66, 0.4) 0 2px 4px,rgba(45, 35, 66, 0.3) 0 7px 13px -3px,rgb(96, 96, 104) 0 -3px 0 inset;
+  box-sizing: border-box;
+  color: #2b2d42;
+  cursor: pointer;
+  display: inline-flex;
+  height: 48px;
+  justify-content: center;
+  line-height: 1;
+  list-style: none;
+  overflow: hidden;
+  padding: 1.5rem 2rem;
+  position: relative;
+  text-align: left;
+  text-decoration: none;
+  transition: box-shadow .15s,transform .15s;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+  white-space: nowrap;
+  will-change: box-shadow,transform;
+  font-size: 1rem;
+  font-weight: 500;
+}
+
+.explanation-button:focus {
+  box-shadow: rgb(96, 96, 104) 0 0 0 1.5px inset, rgba(45, 35, 66, 0.4) 0 2px 4px, rgba(45, 35, 66, 0.3) 0 7px 13px -3px, rgb(96, 96, 104)  0 -3px 0 inset;
+}
+
+.explanation-button:hover {
+  box-shadow: rgba(45, 35, 66, 0.4) 0 4px 8px, rgba(45, 35, 66, 0.3) 0 7px 13px -3px, rgb(96, 96, 104)  0 -3px 0 inset;
+  transform: translateY(-2px);
+}
+
+.explanation-button:active {
+  box-shadow: rgb(96, 96, 104)  0 3px 7px inset;
+  transform: translateY(2px);
+}
+
+/* Scores */
+.score-board {
+  color: #edf2f4;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  flex-wrap: wrap;
+  margin-bottom: 3rem;
+}
+
+#currentScore {
+  font-weight: 600;
+  font-size: 1.7rem;
+  margin-right: 2rem;
+}
+
+.score {
+  font-weight: 500;
+  font-size: 2rem;
+}
+
+#topScore {
+  font-size: 1.2rem;
+}
 
 
 /* MEDIA QUERIES */
@@ -179,6 +259,10 @@ main {
 
   main {
     width: 30rem;
+  }
+
+  .game-end {
+    font-size: 3rem;
   }
 }
 

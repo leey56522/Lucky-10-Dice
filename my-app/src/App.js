@@ -1,9 +1,11 @@
 import React from 'react';
+import { nanoid } from 'nanoid'
+import Confetti from 'react-confetti'
+
 import Die from './components/Die';
 import Button from './components/Button';
 import Score from './components/Score';
-import { nanoid } from 'nanoid'
-import Confetti from 'react-confetti'
+import HowToPlayBtn from './components/HowToPlayBtn'
 
 function App() {
 
@@ -17,51 +19,75 @@ function App() {
     return arr;
   }
 
+  // Toggles dice to be held or unheld when pressed
   const toggleHold = function(id) {
-    // Toggles dice to be held or unheld when pressed
     setDieArr(oldDie => {
       return oldDie.map(die => die.id === id ? {...die, onHold: !die.onHold} : die)
     })
   }
 
   const [dieArr, setDieArr] = React.useState(diePropsGenerator());
+  const [currentScore, setCurrentScore] = React.useState(10000);
+  const [topScore, setTopScore] = React.useState(0);
+  const [rollCounter, setRollCounter] = React.useState(0);
+  const [gameLost, setGameLost] = React.useState(false);
   const [gameWon, setGameWon] = React.useState(false);
 
+
+  // Runs everytime reroll button is pressed
   const reRoll = function() {
     // Gives dice a new value if it's not held
     setDieArr(oldDie => {
       return oldDie.map(die => !die.onHold ? {...die, value: Math.floor(Math.random() * 6 + 1)} : die) 
     })
+
+    // increases reroll counter
+    setRollCounter(rollCounter + 1);
+
+    // Decreases score
+    setCurrentScore(() => {
+      return currentScore - 500
+    })
   }
 
+  // Creates 10 dies elements with assigned properties
+  const dieElements = dieArr.map(die => <Die key={die.id} value={die.value} onHold={die.onHold} toggleHold={() => toggleHold(die.id)} /> )
+
+  // Resets the game when new game button is pressed
   const reset = function() {
     setGameWon(false);
+    setGameLost(false);
+    setCurrentScore(10000);
     setDieArr(diePropsGenerator());
   }
  
+  // Checks the win conditions every time dice are rolled - all dice have same number and held
   React.useEffect(() => {
-      // Checks the win conditions - all dies have same number and held
     let allSameNum = dieArr.every(die => die.value === dieArr[0].value);
     let allHeld = dieArr.every(die => die.onHold === true);
 
     allSameNum && allHeld ? setGameWon(true) : setGameWon(false)
-  }, [dieArr])
+  }, [dieArr, currentScore])
 
-  const dieElements = dieArr.map(die => <Die 
-                                          key={die.id} 
-                                          value={die.value} 
-                                          onHold={die.onHold}
-                                          toggleHold={() => toggleHold(die.id)}
-                                        /> )
+  React.useEffect(() => {
+    if (currentScore <= 0) {
+      setGameLost(true);
+    }
+  }, [currentScore]) 
 
   return (
     <main>
-      {gameWon && <Confetti numberOfPieces={700} recycle={false} tweenDuration={9000}/>}
-      <Score />
-      <div className="dice-box">
-        {dieElements}
+      <Score currentScore={currentScore} topScore={topScore}/>
+
+      <div className="game-board">
+        {gameWon && <Confetti numberOfPieces={700} recycle={false} tweenDuration={9000}/>}
+        <h1 className="game-end">{gameWon ? 'Congratulation' : gameLost ? 'Game Over!' : ''}</h1>
+        {gameWon || gameLost ? '' : <div className="dice-box">{dieElements}</div>}
+        <Button reRoll={reRoll} reset={reset} gameWon={gameWon} gameLost={gameLost}/>
       </div>
-        <Button reRoll={reRoll} reset={reset} gameState={gameWon}/>
+
+      <HowToPlayBtn />
+
     </main>
   );
 }
