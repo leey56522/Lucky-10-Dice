@@ -1,9 +1,19 @@
-function HowToPlayBtn() {
-    
+import React from 'react';
+import HowToPlayBox from './HowToPlayBox';
 
+function HowToPlayBtn() {
+
+    const [displayWindow, setDisplayWindow] = React.useState(false);
+
+    const toggleDisplay = function() {
+        setDisplayWindow(!displayWindow);
+    }
+
+    
     return(
         <div className="explanation-button-box">
-            <button class="explanation-button">How to Play</button>
+            {displayWindow && <HowToPlayBox />}
+            <button class="explanation-button" onClick={toggleDisplay}>How to Play</button>
         </div>
     )
 }

@@ -28,7 +28,11 @@ function App() {
 
   const [dieArr, setDieArr] = React.useState(diePropsGenerator());
   const [currentScore, setCurrentScore] = React.useState(10000);
-  const [topScore, setTopScore] = React.useState(0);
+  const [topScore, setTopScore] = React.useState(() => {
+    const storedScore = JSON.parse(localStorage.getItem('highScore'));
+    return storedScore || 0;
+  });
+  const [finalScore, setFinalScore] = React.useState(0);
   const [rollCounter, setRollCounter] = React.useState(0);
   const [gameLost, setGameLost] = React.useState(false);
   const [gameWon, setGameWon] = React.useState(false);
@@ -59,21 +63,40 @@ function App() {
     setGameLost(false);
     setCurrentScore(10000);
     setDieArr(diePropsGenerator());
+    setTopScore(() => {
+      const storedScore = JSON.parse(localStorage.getItem('highScore'));
+      return storedScore || 0;
+    })
   }
- 
+
   // Checks the win conditions every time dice are rolled - all dice have same number and held
   React.useEffect(() => {
     let allSameNum = dieArr.every(die => die.value === dieArr[0].value);
     let allHeld = dieArr.every(die => die.onHold === true);
 
-    allSameNum && allHeld ? setGameWon(true) : setGameWon(false)
+    if(allSameNum && allHeld) {
+      setGameWon(true)
+      setFinalScore(currentScore)
+    } else {
+      setGameWon(false)
+    }
   }, [dieArr, currentScore])
 
+  //  Game is lost when the score reaches 0 or lower
   React.useEffect(() => {
     if (currentScore <= 0) {
       setGameLost(true);
     }
   }, [currentScore]) 
+
+  React.useEffect(() => {
+
+    if(finalScore > topScore) {
+      localStorage.setItem('highScore', JSON.stringify(finalScore));
+    }
+  }, [gameWon, finalScore, topScore])
+
+  console.log(topScore);
 
   return (
     <main>
@@ -86,7 +109,7 @@ function App() {
         <Button reRoll={reRoll} reset={reset} gameWon={gameWon} gameLost={gameLost}/>
       </div>
 
-      <HowToPlayBtn />
+      <HowToPlayBtn/>
 
     </main>
   );
