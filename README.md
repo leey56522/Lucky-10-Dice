@@ -1,8 +1,10 @@
-# Tenzies
+# Lucky-10-Dice
 
 <a href="https://ibb.co/0cmLdzg"><img src="https://i.ibb.co/Y3PSqVz/Screen-Shot-2022-03-20-at-2-17-06-PM.png" alt="Screen-Shot-2022-03-20-at-2-17-06-PM" border="0"></a>
 
 This is a React game where the player rolls 10 dice until all dice get the same number. The player can hold the dice so that the held dice don't change their value when the player presses reroll button.
+
+The score decreases by 500 each time the player rerolls. Player is lost when the score reaches 0.
 
 The game throws confetti to congratualte the player at the end of the game.
 
